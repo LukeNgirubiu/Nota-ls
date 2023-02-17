@@ -8,16 +8,20 @@ class ServiceRepositoryImplementation(private val dao:ServicesDao):ServiceReposi
     override suspend fun insertService(service: Service) {
         dao.insertService(service)
     }
-
     override suspend fun deleteService(service: Service) {
         dao.deleteService(service)
     }
-
     override suspend fun getServiceById(id: Int): Service? {
         return dao.getServiceById(id)
     }
-
     override fun getAllIServices(): Flow<List<Service>> {
        return dao.getAllIServices()
+    }
+
+    override suspend fun countToday(str: String): Int? {
+        return dao.countToday(str)
+    }
+    override suspend fun countPast(str: String): Int? {
+        return dao.countPast(str)
     }
 }

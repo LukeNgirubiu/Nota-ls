@@ -12,4 +12,6 @@ interface ShoppingRepository {
     suspend fun deleteShopping(shopping: Shopping)
     suspend fun getShoppingById(id:Int): Shopping?
     fun getAllShopping(): Flow<List<Shopping>>
+    suspend fun countShopping(query:String): Int?
+    suspend fun futureShopping(query:String): Int?
 }

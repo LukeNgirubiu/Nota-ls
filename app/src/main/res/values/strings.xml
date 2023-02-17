@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">NotaLs</string>
+    <string name="intro">
+     From the home screen, we have three cards menus each giving information about each of the three use cases of this application. To navigate to
+        any of the three uses you can press on the arrow provided on each card.
+    </string>
+    <string name="preparation">
+        For preparations you can add one by pressing on float button Filling the required fields on the preparation form and
+        then pressing on add. To edit you just long press on the respective item card.\n For activities, on pressing on the activities button,
+        you navigate to activities. To add an item, you press on the floating button to get a popup where you can provide the required data and add an activity.
+        \n To update you can just long press on the respective card activity to change what you desire to change by editing.
+
+    </string>
+    <string name="shopping">
+        For shopping you can add one by pressing on float button Filling the required fields on the shopping popup form and
+        then pressing on add. To edit you just press on the update button of the respective item card.\n For shopping items, on pressing on the cart icon button,
+        you navigate to shopping items where you can add an item by pressing on the floating button to get a popup where you provide the required data and add an item. \n To update you can just long press on the respective card item to change
+        what you desire to change by editing.
+    </string>
 </resources>

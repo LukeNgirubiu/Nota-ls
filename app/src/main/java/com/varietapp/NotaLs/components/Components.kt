@@ -53,9 +53,9 @@ import java.util.*
 
 @Composable
 fun eventComponent(modifier: Modifier,bgColor: Color=colorResource(id = R.color.appColor),sbtColor:Color=colorResource(id = R.color.white),
-                   title:String,subTitle:Array<String>,values:Array<Int>,Navigate:()->Unit){//,onClick:()->Unit
+                   title:String,subTitle:Array<String>,values:Array<Int>,desc:String,Navigate:()->Unit){//,onClick:()->Unit
     Card(modifier = modifier
-        .fillMaxHeight()
+        .heightIn(min = 170.dp)
         .fillMaxWidth(0.9f)
         .padding(all = 7.dp),
         elevation = 5.dp,
@@ -63,11 +63,11 @@ fun eventComponent(modifier: Modifier,bgColor: Color=colorResource(id = R.color.
         contentColor = Color.White
         ) {
       Column(modifier= Modifier
-          .fillMaxSize()
-          .background(bgColor)) {
+          .background(bgColor)
+         ) {
           Row(modifier= Modifier
               .fillMaxWidth()
-              .padding(start = 20.dp, end = 20.dp, top = 15.dp),
+              .padding(start = 20.dp, end = 20.dp, bottom = 10.dp, top = 15.dp),
               horizontalArrangement = Arrangement.SpaceBetween) {
            Text(text = "$title", fontWeight = FontWeight.Bold,
            fontSize = 25.sp,
@@ -82,28 +82,30 @@ fun eventComponent(modifier: Modifier,bgColor: Color=colorResource(id = R.color.
           }
           Row(modifier = Modifier
               .fillMaxWidth()
-              .padding(5.dp),
-              horizontalArrangement = Arrangement.SpaceEvenly
+              .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
+              horizontalArrangement = Arrangement.SpaceBetween
           ) {
-              HomeItems(modifier = Modifier.fillMaxWidth(0.48f),"${subTitle[0]}",values[0],sbtColor)
-              HomeItems(modifier = Modifier.fillMaxWidth(0.48f),"${subTitle[1]}",values[1],sbtColor)
+              HomeItems("${subTitle[0]}",values[0],desc,sbtColor)
+              HomeItems("${subTitle[1]}",values[1],desc,sbtColor)
           }
-
       }
     }
 }
 @Composable
-fun HomeItems(modifier: Modifier,heading:String,number:Int,sbtColor:Color){
-    Column(modifier = modifier) {
+fun HomeItems(heading:String,number:Int,desc:String,sbtColor:Color){
+    Column() {
+        Text(text = desc, fontWeight = FontWeight.W300,
+            fontSize = 20.sp,
+            modifier = Modifier.padding(start = 5.dp)
+        )
         Text(text = heading, fontWeight = FontWeight.Medium,
             fontSize = 25.sp,
-            modifier = Modifier.padding(top = 3.dp)
         )
         Text(text = "$number",
             fontWeight = FontWeight.Light,
             fontSize = 30.sp,
             color= sbtColor,
-            modifier = Modifier.padding(top = 1.dp)
+            modifier = Modifier.padding(start = 7.dp, top = 7.dp)
         )
     }
 }
@@ -160,46 +162,31 @@ fun PrepareItem(prep:Event,event:(PrepEvent)->Unit){
             Row(horizontalArrangement = Arrangement.SpaceBetween,modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 15.dp)) {
-                Button(onClick = {
-               event(PrepEvent.onActivities(prep.id!!,prep.Date))
+                IconButton(onClick = {
+                    event(PrepEvent.onActivities(prep.id!!,prep.Date))
                 },
-                    elevation = ButtonDefaults.elevation(2.dp,2.dp),
-                    modifier = Modifier
-                        .fillMaxWidth(0.4f)
-                        .padding(start = 10.dp)
-                        .clip(RoundedCornerShape(5.dp)),
-                    contentPadding = PaddingValues(10.dp,10.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.appColor2))
+                    modifier = Modifier.padding(start=20.dp)
                 ) {
-                    Text(text = "Activities",
-                        textAlign = TextAlign.Center,
-                        color= Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
+                    Icon(painter = painterResource(id = R.drawable.activities_icon) ,
+                        contentDescription = "Back",
+                        tint = colorResource(id = R.color.appColor2)
                     )
                 }
-                Button(onClick = {
-                 event(PrepEvent.onDeleteDialog(prep!!))
-                }, elevation = ButtonDefaults.elevation(2.dp,2.dp),
-                    modifier = Modifier
-                        .fillMaxWidth(0.6f)
-                        .padding(end = 10.dp)
-                        .clip(RoundedCornerShape(5.dp)),
-                    contentPadding = PaddingValues(10.dp,10.dp),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.red_1))
+                IconButton(onClick = {
+                    event(PrepEvent.onDeleteDialog(prep!!))
+                },
+                    modifier = Modifier.padding(start=20.dp)
                 ) {
-                    Text(text = "Delete",
-                        textAlign = TextAlign.Center,
-                        color= Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
+                    Icon(painter = painterResource(id = R.drawable.delete_items) ,
+                        contentDescription = "Back",
+                        tint = colorResource(id = R.color.red_1)
                     )
                 }
             }
         }
     }
 }
-
+//#008080
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun activitiesDialog(prepId:Int, dismis:()->Unit, viewHolder:ActivitiesViewModel= hiltViewModel(), context: Context, activityId:Int?){
@@ -416,7 +403,9 @@ fun activityCard(eventActivity: EventActivity,event:(ActivityEvent)->Unit){
           },
               enabled = if(eventActivity.done) false else true,
               colors = CheckboxDefaults.colors(Color.Red),
-              modifier = Modifier.padding(0.dp).fillMaxWidth(0.15f)
+              modifier = Modifier
+                  .padding(0.dp)
+                  .fillMaxWidth(0.15f)
           )
           Text(text =eventActivity.name!!, style = TextStyle(
               fontFamily = FontFamily(
@@ -424,9 +413,13 @@ fun activityCard(eventActivity: EventActivity,event:(ActivityEvent)->Unit){
               ),
               fontSize = 20.sp,
               color = Color.Black
-          ), modifier = Modifier.fillMaxWidth(0.8f).padding(top=7.dp))
+          ), modifier = Modifier
+              .fillMaxWidth(0.8f)
+              .padding(top = 7.dp))
           Text(text =eventActivity.time, style = MaterialTheme.typography.subtitle1,
-              modifier = Modifier.fillMaxWidth().padding(top=10.dp),
+              modifier = Modifier
+                  .fillMaxWidth()
+                  .padding(top = 10.dp),
               color =colorResource(R.color.appColor2))
       }
           IconButton(onClick = {
@@ -685,7 +678,7 @@ fun shoppingItem(shopping: Shopping,event:(ShoppingEvent)->Unit){
         ) {
         Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 10.dp),
+            .padding(top = 5.dp),
             horizontalArrangement = Arrangement.End
         ){
             IconButton(onClick = {
@@ -1078,7 +1071,7 @@ fun ServiceCard(service:Service,event:(ServiceEvent)->Unit){
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
-                    event(ServiceEvent.onUpdate(service))
+                        event(ServiceEvent.onUpdate(service))
                     }
                 )
             }
@@ -1178,7 +1171,9 @@ fun deletionActiveDialog(body:String,delete:(PrepEvent)->Unit,close:()->Unit){
                     }
                 }
                 Text(text = "$body",
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp, start = 20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 5.dp, start = 20.dp),
                     style=TextStyle(fontSize = 20.sp,
                         color=colorResource(id = R.color.appColor2),
                         fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))
@@ -1240,7 +1235,9 @@ fun deletionShoppingDialog(body:String,delete:(ShoppingEvent)->Unit,close:()->Un
                     }
                 }
                 Text(text = "$body",
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp, start = 20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 5.dp, start = 20.dp),
                     style=TextStyle(fontSize = 20.sp,
                         color=colorResource(id = R.color.appColor3),
                         fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))

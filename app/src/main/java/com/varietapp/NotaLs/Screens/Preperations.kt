@@ -37,15 +37,12 @@ fun preparations(context:Context, viewModel:PrepsView= hiltViewModel(), onNaviga
             when(event){
                 is UiEvents.Navigate->onNavigate(event)
                 is UiEvents.ShowSnackBar->{
-                    val result=scaffoldState.snackbarHostState.showSnackbar(
+                scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message,
                         actionLabel = event.action
                     )
-//                  if (result==SnackbarResult.ActionPerformed){
-                     //   viewModel.onEvent(PrepEvent.undoDelete)
-                 //   }
+
                 }
-                else->Unit
             }
         }
     }

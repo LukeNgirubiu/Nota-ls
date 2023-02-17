@@ -17,4 +17,12 @@ class EventRepositoryImplement(private val dao:EventDao):EventRepository {
     override fun getEvents(): Flow<List<Event>> {
         return dao.getAllEvents()
     }
+
+    override suspend fun countEvents(str: String): Int? {
+        return dao.countEvents(str)
+    }
+
+    override suspend fun futureEvents(str: String): Int? {
+        return dao.futureEvents(str)
+    }
 }

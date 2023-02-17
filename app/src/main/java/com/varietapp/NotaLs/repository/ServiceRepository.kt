@@ -13,4 +13,6 @@ interface ServiceRepository {
     suspend fun deleteService(service: Service)
     suspend fun getServiceById(id:Int): Service?
     fun getAllIServices(): Flow<List<Service>>
+    suspend fun countToday(str:String): Int?
+    suspend fun countPast(str:String): Int?
 }

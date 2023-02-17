@@ -8,5 +8,6 @@ interface EventRepository {
     suspend fun deleteEvent(event: Event)
     suspend fun getEventById(id:Int): Event?
     fun getEvents():Flow<List<Event>>
-
+    suspend fun countEvents(str:String):Int?
+    suspend fun futureEvents(str:String):Int?
 }

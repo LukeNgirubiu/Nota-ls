@@ -18,4 +18,8 @@ interface EventDao {
     suspend fun getEventById(id:Int):Event?
     @Query("SELECT * FROM event ORDER BY Date DESC")
     fun getAllEvents():Flow<List<Event>>
+    @Query("SELECT COUNT(*) FROM event WHERE Date==:str")
+    suspend fun countEvents(str:String):Int?
+    @Query("SELECT COUNT(*) FROM event WHERE Date>:str")
+    suspend fun futureEvents(str:String):Int?
 }

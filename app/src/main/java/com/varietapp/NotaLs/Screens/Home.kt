@@ -5,12 +5,13 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -29,27 +30,51 @@ import com.varietapp.NotaLs.components.eventComponent
 import kotlinx.coroutines.flow.collect
 
 @Composable
-fun Home(context: Context, viewModel: HomeViewModel= hiltViewModel(), onNavigate: (UiEvents.Navigate)->Unit) {
+fun Home(viewModel: HomeViewModel= hiltViewModel(), onNavigate: (UiEvents.Navigate)->Unit) {
+    val scroll= rememberScrollState()
+    var shoppingToday by remember {
+        mutableStateOf<Int?>(0)
+    }
+    var shoppingFuture by remember {
+        mutableStateOf<Int?>(0)
+    }
+    var eventToday by remember {
+        mutableStateOf<Int?>(0)
+    }
+    var eventFuture by remember {
+        mutableStateOf<Int?>(0)
+    }
+    var countToday by remember {
+        mutableStateOf<Int?>(0)
+    }
+    var countPast by remember {
+        mutableStateOf<Int?>(0)
+    }
     LaunchedEffect(key1 = true){
+        shoppingToday=viewModel.shoppingsToday()
+        shoppingFuture=viewModel.shoppingsFuture()
+        eventToday=viewModel.countEvents()
+        eventFuture=viewModel.futureEvents()
+        countToday=viewModel.countToday()
+        countPast=viewModel.countPast()
         viewModel.eventReciever.collect{ event->
              when(event){
                  is UiEvents.Navigate->onNavigate(event)
-                 else->{
-
-                 }
-
+                 else->Unit
              }
         }
     }
     Column(modifier = Modifier
         .fillMaxHeight()
+        .verticalScroll(scroll)
         .fillMaxWidth()
-        .background(color = colorResource(id = R.color.background))
+        .background(color = colorResource(id = R.color.background)),
+        verticalArrangement = Arrangement.SpaceEvenly
         ) {
 
         Box(modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.2f)
+            .heightIn(100.dp)
             .padding(top = 12.dp)) {
          Column(modifier = Modifier.fillMaxSize()) {
              Row(horizontalArrangement = Arrangement.SpaceBetween,modifier = Modifier.fillMaxWidth()
@@ -61,7 +86,8 @@ fun Home(context: Context, viewModel: HomeViewModel= hiltViewModel(), onNavigate
                      fontWeight = FontWeight.ExtraBold
                  )
              IconButton(onClick = {
-                 Toast.makeText(context,"Hello luke, here i am",Toast.LENGTH_LONG).show()},
+              viewModel.onEvent(HomeEvent.onToHelp)
+             },
                  modifier = Modifier.padding(end=10.dp)
                  ) {
                  Icon(painter = painterResource(id = R.drawable.help) , contentDescription = "Help")
@@ -69,39 +95,43 @@ fun Home(context: Context, viewModel: HomeViewModel= hiltViewModel(), onNavigate
              }
              Text(text = "Making you note and remember",
                 modifier = Modifier.padding(
-                 start =30.dp, top = 15.dp),
+                 start =20.dp, top = 5.dp, bottom = 30.dp),
                  color = colorResource(id = R.color.titleColor),
                  fontSize = 20.sp,
              )
          }
         }
+
       eventComponent(modifier = Modifier
-          .fillMaxHeight(0.3f)
           .fillMaxWidth(),
-          title="Preparations", subTitle = arrayOf("Today","Future"),
-          values = arrayOf(20,8),
+          title="Preparations",
+          subTitle = arrayOf("Today","Future"),
+          values = arrayOf(eventToday!!,eventFuture!!),
+          desc = "Scheduled",
           Navigate = {
           viewModel.onEvent(HomeEvent.onToPreparations)
           }
       )
         Spacer(modifier = Modifier.height(15.dp))
         eventComponent(modifier = Modifier
-            .fillMaxHeight(0.43f)
             .fillMaxWidth(),
             bgColor = colorResource(id = R.color.appColor3),
-            title="Shopping's", subTitle = arrayOf("Today","Future"),
-            values = arrayOf(25,15),
+            title="Shopping's",
+            subTitle = arrayOf("Today","Future"),
+            values = arrayOf(shoppingToday!!,shoppingFuture!!),
+            desc = "Expiry",
             Navigate = {
                 viewModel.onEvent(HomeEvent.onToShopping)
         })
         Spacer(modifier = Modifier.height(15.dp))
         eventComponent(modifier = Modifier
-            .fillMaxHeight(0.8f)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(5.dp),
             title="Services",
             bgColor = colorResource(id = R.color.appColor2)
             , subTitle = arrayOf("Today","Past"),
-            values = arrayOf(25,15),
+            values = arrayOf(countToday!!,countPast!!),
+            desc = "Checked",
             Navigate= {
                 viewModel.onEvent(HomeEvent.onToServices)
             })

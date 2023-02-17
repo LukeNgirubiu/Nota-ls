@@ -17,4 +17,12 @@ class ShoppingRepoImplement(private val shoppingDao:ShoppingDao):ShoppingReposit
        return shoppingDao.getAllShopping()
     }
 
+    override suspend fun countShopping(query: String): Int? {
+        return shoppingDao.countShopping(query)
+    }
+
+    override suspend fun futureShopping(query: String): Int? {
+        return shoppingDao.futureShopping(query)
+    }
+
 }

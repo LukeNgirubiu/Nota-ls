@@ -1,7 +1,6 @@
 package com.varietapp.NotaLs.dao
 
 import androidx.room.*
-import com.varietapp.NotaLs.data.Items
 import com.varietapp.NotaLs.data.Service
 import kotlinx.coroutines.flow.Flow
 @Dao
@@ -14,4 +13,8 @@ interface ServicesDao {
     suspend fun getServiceById(id:Int): Service?
     @Query("SELECT * FROM service")
     fun getAllIServices(): Flow<List<Service>>
+    @Query("SELECT COUNT(*) FROM service WHERE Date==:str")
+    suspend fun countToday(str:String): Int?
+    @Query("SELECT COUNT(*) FROM service WHERE Date<:str")
+    suspend fun countPast(str:String): Int?
 }

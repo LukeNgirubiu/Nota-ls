@@ -19,7 +19,7 @@ import com.varietapp.NotaLs.Screens.*
 fun navigation(controller: NavHostController,context: Context){
 NavHost(navController = controller, startDestination = Routes.home.route ){
     composable(route = Routes.home.route){
-        Home(context ,onNavigate = {
+        Home(onNavigate = {
             controller.navigate(it.route){
                 popUpTo(it.route){
                     inclusive=true
@@ -29,17 +29,38 @@ NavHost(navController = controller, startDestination = Routes.home.route ){
     }
     composable(route = Routes.preps.route){
         preparations(context , onNavigate = {
-           controller.navigate(it.route)
+           controller.navigate(it.route){
+               popUpTo(it.route){
+                   inclusive=true
+               }
+           }
         })
     }
     composable(route = Routes.services.route){
         Services(onNavigate = {
-            controller.navigate(it.route)
+            controller.navigate(it.route){
+                popUpTo(it.route){
+                    inclusive=true
+                }
+            }
+        })
+    }
+    composable(route = Routes.help.route){
+        Help(onNavigate = {
+            controller.navigate(it.route){
+                popUpTo(it.route){
+                    inclusive=true
+                }
+            }
         })
     }
     composable(route = Routes.shop.route){
         Shopping(context , onNavigate = {
-            controller.navigate(it.route)
+            controller.navigate(it.route){
+                popUpTo(it.route){
+                    inclusive=true
+                }
+            }
         })
     }
     composable(route = Routes.prepAdd.route,
@@ -69,7 +90,11 @@ NavHost(navController = controller, startDestination = Routes.home.route ){
     ){
         val id=it.arguments?.getInt(SVID)
         AddService(id!!.toInt(),onNavigate = {
-         controller.navigate(it.route)
+         controller.navigate(it.route){
+             popUpTo(it.route){
+                 inclusive=true
+             }
+         }
         })
     }
 

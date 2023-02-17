@@ -100,13 +100,6 @@ fun addPreperation(stateType:Int,viewModel: PrepsView = hiltViewModel(), onNavig
        ) {
            //State type 0 for new prep 1 for update
            val submitTxt=if (stateType==0) "Add" else "Update"
-           val feildsColor=TextFieldDefaults.textFieldColors(
-               focusedIndicatorColor = colorResource(id = R.color.teal_700),
-               focusedLabelColor = colorResource(id = R.color.red_1),
-               backgroundColor = Color.White,
-               textColor = colorResource(id = R.color.appColor),
-               cursorColor = colorResource(id = R.color.appColor)
-           )
            Text(text = "Preparation",
                fontSize = 18.sp,
                fontWeight = FontWeight.W500,
@@ -123,7 +116,7 @@ fun addPreperation(stateType:Int,viewModel: PrepsView = hiltViewModel(), onNavig
                singleLine = true,
                isError = prepNameValid,
                colors = TextFieldDefaults.textFieldColors(
-                   cursorColor =  Color.White,
+                   cursorColor =  Color.Black,
                    focusedIndicatorColor = colorResource(id = R.color.appColor2)
                )
            )
@@ -152,7 +145,7 @@ fun addPreperation(stateType:Int,viewModel: PrepsView = hiltViewModel(), onNavig
                    .padding(start = 10.dp, end = 10.dp, bottom = 2.dp),
                singleLine = true,
                colors = TextFieldDefaults.textFieldColors(
-                   cursorColor =  Color.White,
+                   cursorColor =  Color.Black,
                    focusedIndicatorColor = colorResource(id = R.color.appColor2)
                ),
                isError = descriptionsValid,
@@ -206,7 +199,6 @@ fun addPreperation(stateType:Int,viewModel: PrepsView = hiltViewModel(), onNavig
                    val dbDate=dueDate.split("/").reversed().joinToString("-")
                    val id =if (stateType==0) null else stateType
                    viewModel.onEvent(PrepEvent.onInsertPrep(Event(id=id,name = preparationName, description = descriptions,Date=dbDate, activaties = 0)))
-
                }
                else{
                    prepNameValid=!valid.feildsValid.get("name")!!

@@ -14,4 +14,8 @@ interface ShoppingDao {
     suspend fun getShoppingById(id:Int): Shopping?
     @Query("SELECT * FROM shopping")
     fun getAllShopping(): Flow<List<Shopping>>
+    @Query("SELECT COUNT(*) FROM shopping WHERE dateDue==:query")
+    suspend fun countShopping(query:String): Int?
+    @Query("SELECT COUNT(*) FROM shopping WHERE dateDue>:query")
+    suspend fun futureShopping(query:String): Int?
 }
