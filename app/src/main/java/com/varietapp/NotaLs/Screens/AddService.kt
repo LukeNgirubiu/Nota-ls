@@ -46,6 +46,7 @@ fun AddService(serviceId:Int, onNavigate:(UiEvents.Navigate)->Unit,viewModel: Se
         mutableStateOf("Add")
     }
     LaunchedEffect(key1 = true){
+        println("Service id $serviceId")
         if(serviceId>0){
             val serv=viewModel.getService(serviceId)
             service=serv!!.name
@@ -146,11 +147,10 @@ fun AddService(serviceId:Int, onNavigate:(UiEvents.Navigate)->Unit,viewModel: Se
                         errors=validate.errors
                         errorsFields=validate.feildsValid
                         if (validate.valid){
-                         /**/
                             val serveId=if(serviceId==0) null else serviceId
                           viewModel.onEvent(ServiceEvent.onSave(Service(name = service,
                               cost = expense.toDouble(),
-                              id = serviceId
+                              id = serveId
                           )))
                         }
                         else{

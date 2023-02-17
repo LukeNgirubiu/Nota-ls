@@ -23,6 +23,8 @@ class ShoppingViewModel @Inject constructor(
 ) :ViewModel() {
     var isDialogOn by mutableStateOf(false)
         private set
+    var isDeleteDialogOn by mutableStateOf(false)
+        private set
     var dialogueType by mutableStateOf(1)
         private set
     var shopping by mutableStateOf<Shopping?>(null)
@@ -31,6 +33,10 @@ class ShoppingViewModel @Inject constructor(
     val eventReciever=eventSender.receiveAsFlow()
     fun getAllShoppings(): Flow<List<Shopping>> {
         return repository.getAllShopping()
+    }
+    fun closeDelete(){
+        isDeleteDialogOn=false
+        shopping=null
     }
     fun onEvent(event:ShoppingEvent){
         when(event){
@@ -58,16 +64,15 @@ class ShoppingViewModel @Inject constructor(
                 dialogueType=2
                 shopping=event.shopping
             }
-            is ShoppingEvent.onDelete->{
+            is ShoppingEvent.onDeleteDialog->{
                 shopping=event.shopping
-                viewModelScope.launch {
-                    repository.deleteShopping(event.shopping)
-                    sendEvent(UiEvents.ShowSnackBar("Shopping deleted","Undo",1))
-                }
+                isDeleteDialogOn=true
             }
-            is ShoppingEvent.undoDelete->{
+            is ShoppingEvent.onDelete->{
                 viewModelScope.launch {
-                    repository.insertShopping(shopping!!)
+                    repository.deleteShopping(shopping!!)
+                    closeDelete()
+                  //  sendEvent(UiEvents.ShowSnackBar("Shopping deleted","",1))
                 }
             }
             is ShoppingEvent.onToItems->{

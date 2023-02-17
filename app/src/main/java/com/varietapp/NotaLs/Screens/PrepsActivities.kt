@@ -59,7 +59,8 @@ fun Active(id:Int,date:String, viewModel: ActivitiesViewModel= hiltViewModel(), 
                 .fillMaxWidth()
                 .heightIn(min = 40.dp)
                 .padding(bottom = 5.dp)
-                .background(color = colorResource(id = R.color.background)),
+                    //
+                .background(color = colorResource(id = R.color.appColor)),
                 horizontalArrangement = Arrangement.Start,
                 content = {
                     IconButton(onClick = {
@@ -67,10 +68,12 @@ fun Active(id:Int,date:String, viewModel: ActivitiesViewModel= hiltViewModel(), 
                     },
                         modifier = Modifier.padding(start=20.dp)
                     ) {
-                        Icon(painter = painterResource(id = R.drawable.back_icon) , contentDescription = "Back")
+                        Icon(painter = painterResource(id = R.drawable.back_icon) ,
+                            contentDescription = "Back",
+                        tint = Color.White)
                     }
                     Text(text = "Activities",
-                        color = colorResource(id = R.color.titleColor),
+                        color = colorResource(id = R.color.white),
                         fontSize = 25.sp,
                         fontFamily = FontFamily(Font(R.font.source_sans_pro_bold)),
                         modifier = Modifier.padding(top = 7.dp, bottom = 10.dp, start = 30.dp)
@@ -98,7 +101,7 @@ fun Active(id:Int,date:String, viewModel: ActivitiesViewModel= hiltViewModel(), 
                 FloatingActionButton(onClick = {
                     viewModel.setDialogOn()
                 },
-                    backgroundColor = colorResource(id = R.color.appColor3),
+                    backgroundColor = colorResource(id = R.color.appColor),
                     contentColor = Color.White
                 ) {
                     Icon(imageVector = Icons.Default.Add, contentDescription ="To add" )

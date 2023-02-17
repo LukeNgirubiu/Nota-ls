@@ -6,9 +6,10 @@ sealed class PrepEvent {
     object onAddPrep:PrepEvent()
     data class onEditPrep(val id:Int):PrepEvent()
     data class onActivities(val id:Int,val date:String):PrepEvent()
-    data class onDeletePrep(val item:Event):PrepEvent()
-    object undoDelete:PrepEvent()
+    object onDeletePrep:PrepEvent()
+    data class onDeleteDialog(val prep:Event):PrepEvent()
     data class onInsertPrep(val prep:Event):PrepEvent()
     object backToPreps:PrepEvent()
     object backToHome:PrepEvent()
+    //(val item:Event)
 }

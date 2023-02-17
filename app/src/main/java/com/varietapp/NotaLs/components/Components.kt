@@ -179,7 +179,7 @@ fun PrepareItem(prep:Event,event:(PrepEvent)->Unit){
                     )
                 }
                 Button(onClick = {
-                 event(PrepEvent.onDeletePrep(prep))
+                 event(PrepEvent.onDeleteDialog(prep!!))
                 }, elevation = ButtonDefaults.elevation(2.dp,2.dp),
                     modifier = Modifier
                         .fillMaxWidth(0.6f)
@@ -250,7 +250,7 @@ fun activitiesDialog(prepId:Int, dismis:()->Unit, viewHolder:ActivitiesViewModel
                   .fillMaxWidth()
                   .padding(bottom = 10.dp),
               horizontalArrangement = Arrangement.SpaceBetween){
-                  val activityTitle=if(activityId==0) "Add" else "Update"
+                  val activityTitle=if(activityId==null) "Add" else "Update"
                   Text(text = "$activityTitle Activity",
                       modifier = Modifier.padding(top = 15.dp, start = 20.dp),
                       style=TextStyle(fontSize = 22.sp,
@@ -267,7 +267,7 @@ fun activitiesDialog(prepId:Int, dismis:()->Unit, viewHolder:ActivitiesViewModel
                   Text(text = "Name",
                       modifier = Modifier.padding(bottom = 5.dp, start = 20.dp),
                       style=TextStyle(fontSize = 18.sp,
-                      color=colorResource(id = R.color.appColor3),
+                      color=colorResource(id = R.color.appColor2),
                       fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))
               }
               TextField(value =activity ,
@@ -275,11 +275,11 @@ fun activitiesDialog(prepId:Int, dismis:()->Unit, viewHolder:ActivitiesViewModel
                   singleLine = false,
                   maxLines = 3,
                   isError = activeValid,
-                  textStyle=TextStyle(fontSize = 22.sp, color = colorResource(id = R.color.appColor3)),
+                  textStyle=TextStyle(fontSize = 22.sp, color = colorResource(id = R.color.appColor2)),
                   modifier = Modifier.fillMaxWidth(0.9f),
                   colors = TextFieldDefaults.textFieldColors(
-                      cursorColor =  colorResource(id = R.color.appColor3),
-                      focusedIndicatorColor = colorResource(id = R.color.appColor3)
+                      cursorColor =  colorResource(id = R.color.appColor2),
+                      focusedIndicatorColor = colorResource(id = R.color.appColor2)
                   )
                   )
               Row(modifier = Modifier
@@ -295,7 +295,7 @@ fun activitiesDialog(prepId:Int, dismis:()->Unit, viewHolder:ActivitiesViewModel
                   Text(text = "Time",
                       modifier = Modifier.padding(bottom = 5.dp, start = 20.dp),
                       style=TextStyle(fontSize = 18.sp,
-                          color=colorResource(id = R.color.appColor3),
+                          color=colorResource(id = R.color.appColor2),
                           fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))
               }
               Button(onClick = {
@@ -317,11 +317,11 @@ fun activitiesDialog(prepId:Int, dismis:()->Unit, viewHolder:ActivitiesViewModel
                       .clip(RoundedCornerShape(5.dp)),
                   contentPadding = PaddingValues(10.dp,10.dp),
                   colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-                   border = BorderStroke(1.dp,if(timeValid) Color.Red else colorResource(id = R.color.appColor3))
+                   border = BorderStroke(1.dp,if(timeValid) Color.Red else colorResource(id = R.color.appColor2))
               ) {
                   Text(text = "$time",
                       textAlign = TextAlign.Center,
-                      color= if(timeValid) Color.Red else colorResource(id = R.color.appColor3),
+                      color= if(timeValid) Color.Red else colorResource(id = R.color.appColor2),
                       fontFamily = FontFamily(Font(R.font.source_sans_pro_bold)),
                       fontSize = 22.sp )
               }
@@ -369,7 +369,7 @@ fun activitiesDialog(prepId:Int, dismis:()->Unit, viewHolder:ActivitiesViewModel
                       .padding(start = 10.dp, top = 7.dp, end = 10.dp, bottom = 20.dp)
                       .clip(RoundedCornerShape(10.dp)),
                   contentPadding = PaddingValues(10.dp,10.dp),
-                  colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.appColor3))
+                  colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.appColor2))
               ) {
                Text(text = "$submitLabel",
                    textAlign = TextAlign.Center,
@@ -389,7 +389,7 @@ fun activityCard(eventActivity: EventActivity,event:(ActivityEvent)->Unit){
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 40.dp)
-            .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+            .padding(start = 5.dp, end = 5.dp, bottom = 10.dp)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
@@ -404,39 +404,41 @@ fun activityCard(eventActivity: EventActivity,event:(ActivityEvent)->Unit){
       .fillMaxWidth()
       .heightIn(20.dp)
       .background(color = colorResource(id = R.color.card_grey))) {
-      Text(text =eventActivity.name!!, style = TextStyle(
-          fontFamily = FontFamily(
-              Font(R.font.source_sans_pro_bold)
-          ),
-          fontSize = 22.sp,
-          color = colorResource(id = R.color.appColor2)
-      ), modifier = Modifier.padding(start = 15.dp,top=10.dp, bottom = 10.dp))
-      Text(text =eventActivity.time, style = MaterialTheme.typography.subtitle1,
-          modifier = Modifier.padding(start = 15.dp,bottom = 10.dp),
-          color = Color.Red)
       Row(modifier = Modifier
           .fillMaxWidth()
-          .padding(bottom = 10.dp, start = 10.dp, end = 10.dp),
+          .padding(bottom = 7.dp),
           horizontalArrangement = Arrangement.SpaceBetween
-          ){
-
-          Checkbox(checked = eventActivity.done, onCheckedChange ={ isChecked->
+      ){
+          Checkbox(checked = eventActivity.done,
+              onCheckedChange ={ isChecked->
               val updater=eventActivity.copy(done = isChecked)
               event(ActivityEvent.onInsert(updater,1))
           },
               enabled = if(eventActivity.done) false else true,
-              colors = CheckboxDefaults.colors(Color.Red)
+              colors = CheckboxDefaults.colors(Color.Red),
+              modifier = Modifier.padding(0.dp).fillMaxWidth(0.15f)
           )
+          Text(text =eventActivity.name!!, style = TextStyle(
+              fontFamily = FontFamily(
+                  Font(R.font.source_sans_pro_bold)
+              ),
+              fontSize = 20.sp,
+              color = Color.Black
+          ), modifier = Modifier.fillMaxWidth(0.8f).padding(top=7.dp))
+          Text(text =eventActivity.time, style = MaterialTheme.typography.subtitle1,
+              modifier = Modifier.fillMaxWidth().padding(top=10.dp),
+              color =colorResource(R.color.appColor2))
+      }
           IconButton(onClick = {
               event(ActivityEvent.onDelete(eventActivity.id!!))
           },
-              modifier = Modifier.padding(start=20.dp)
+              modifier = Modifier.padding(start=10.dp)
           ) {
               Icon(painter = painterResource(id = R.drawable.delete_items) , contentDescription = "Back", tint = colorResource(
                   id = R.color.red_1
               ))
           }
-      }
+
   }
     }
 }
@@ -751,7 +753,7 @@ fun shoppingItem(shopping: Shopping,event:(ShoppingEvent)->Unit){
             }
 
             Button(onClick = {
-              event(ShoppingEvent.onDelete(shopping))
+              event(ShoppingEvent.onDeleteDialog(shopping))
             }, elevation = ButtonDefaults.elevation(2.dp,2.dp),
                 modifier = Modifier
                     .padding(end = 20.dp)
@@ -1002,7 +1004,6 @@ fun ItemCard(item:Items,event:(ItemsEvent)->Unit){
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
-                        println("Onlong press")
                         event(ItemsEvent.openDialog(item.shoppId, 2, item))
                     }
                 )
@@ -1141,6 +1142,132 @@ fun ServiceCard(service:Service,event:(ServiceEvent)->Unit){
 
     }
 }
+
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun deletionActiveDialog(body:String,delete:(PrepEvent)->Unit,close:()->Unit){
+    Dialog(onDismissRequest ={
+        close()
+    } , properties = DialogProperties(
+        usePlatformDefaultWidth = false
+    )) {
+        Card(modifier = Modifier
+            .fillMaxWidth(0.9f)
+            .heightIn(50.dp),
+            elevation = 5.dp,
+            shape = RoundedCornerShape(10.dp)
+        ) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .background(color = Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween){
+                    Text(text = "Delete Prepation",
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp),
+                        style=TextStyle(fontSize = 22.sp,
+                            fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))
+                    IconButton(onClick = {
+                     close()
+                    },
+                        modifier = Modifier.padding(end=10.dp)
+                    ) {
+                        Icon(painter = painterResource(id = R.drawable.close_dialog) , contentDescription = "close")
+                    }
+                }
+                Text(text = "$body",
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp, start = 20.dp),
+                    style=TextStyle(fontSize = 20.sp,
+                        color=colorResource(id = R.color.appColor2),
+                        fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))
+                Button(onClick = {
+                 delete(PrepEvent.onDeletePrep)
+                },
+                    elevation = ButtonDefaults.elevation(2.dp,2.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, top = 7.dp, end = 10.dp, bottom = 20.dp)
+                        .clip(RoundedCornerShape(10.dp)),
+                    contentPadding = PaddingValues(10.dp,10.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor =Color.Red)
+                ) {
+                    Text(text = "Delete",
+                        textAlign = TextAlign.Center,
+                        color= Color.White,
+                        fontFamily = FontFamily(Font(R.font.source_sans_pro_bold)),
+                        fontSize = 22.sp )
+                }
+            }
+        }
+    }
+
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun deletionShoppingDialog(body:String,delete:(ShoppingEvent)->Unit,close:()->Unit){
+    Dialog(onDismissRequest ={
+        println("Closing at component")
+        close()
+    } , properties = DialogProperties(
+        usePlatformDefaultWidth = false
+    )) {
+        Card(modifier = Modifier
+            .fillMaxWidth(0.9f)
+            .heightIn(50.dp),
+            elevation = 5.dp,
+            shape = RoundedCornerShape(10.dp)
+        ) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .background(color = Color.White), horizontalAlignment = Alignment.CenterHorizontally) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween){
+                    Text(text = "Delete shopping",
+                        modifier = Modifier.padding(top = 15.dp, start = 20.dp),
+                        style=TextStyle(fontSize = 22.sp,
+                            fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))
+                    IconButton(onClick = {
+                        close()
+                    },
+                        modifier = Modifier.padding(end=10.dp)
+                    ) {
+                        Icon(painter = painterResource(id = R.drawable.close_dialog) , contentDescription = "close")
+                    }
+                }
+                Text(text = "$body",
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp, start = 20.dp),
+                    style=TextStyle(fontSize = 20.sp,
+                        color=colorResource(id = R.color.appColor3),
+                        fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))
+                Button(onClick = {
+                   delete(ShoppingEvent.onDelete)
+                },
+                    elevation = ButtonDefaults.elevation(2.dp,2.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, top = 7.dp, end = 10.dp, bottom = 20.dp)
+                        .clip(RoundedCornerShape(10.dp)),
+                    contentPadding = PaddingValues(10.dp,10.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor =Color.Red)
+                ) {
+                    Text(text = "Delete",
+                        textAlign = TextAlign.Center,
+                        color= Color.White,
+                        fontFamily = FontFamily(Font(R.font.source_sans_pro_bold)),
+                        fontSize = 22.sp )
+                }
+            }
+        }
+    }
+
+}
+
+
 @Composable
 fun doneWithArch(modifier: Modifier,heading:String,percent:Float){
     Column(modifier = modifier) {

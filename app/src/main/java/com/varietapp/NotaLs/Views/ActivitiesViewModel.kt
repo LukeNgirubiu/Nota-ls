@@ -33,6 +33,7 @@ class ActivitiesViewModel @Inject constructor(
     }
     fun setDialogOff(){
         isDialogOn=false
+        activityId=null
     }
     fun setActivityId(id:Int){
         activityId=id!!
@@ -70,7 +71,6 @@ class ActivitiesViewModel @Inject constructor(
               isDialogOn=false
               unSetActivityId()
               val operationType=if (event.activity.id!=null)"Updated" else "Added"
-
               sendEvent(UiEvents.ShowSnackBar("${operationType} an activity","",event.checking))
           }
           is ActivityEvent.undoStatus->{

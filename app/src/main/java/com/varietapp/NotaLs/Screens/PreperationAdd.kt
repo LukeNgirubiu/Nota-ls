@@ -78,11 +78,11 @@ fun addPreperation(stateType:Int,viewModel: PrepsView = hiltViewModel(), onNavig
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp)
-                    .background(color = colorResource(id = R.color.background)),
+                    .background(color = colorResource(id = R.color.appColor)),
                     horizontalArrangement = Arrangement.Center,
                 content = {
                     Text(text = "Preparation Form",
-                       color = colorResource(id = R.color.titleColor),
+                       color = Color.White,
                         fontSize = 25.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 20.dp, bottom = 20.dp)
@@ -94,14 +94,12 @@ fun addPreperation(stateType:Int,viewModel: PrepsView = hiltViewModel(), onNavig
        Column(modifier = Modifier
            .fillMaxSize()
            .padding(it.calculateBottomPadding())
-           .background(color = colorResource(id = R.color.background)),
+           .background(color = colorResource(id = R.color.card_grey)),
            verticalArrangement = Arrangement.Top,
            horizontalAlignment = Alignment.Start
        ) {
            //State type 0 for new prep 1 for update
            val submitTxt=if (stateType==0) "Add" else "Update"
-
-
            val feildsColor=TextFieldDefaults.textFieldColors(
                focusedIndicatorColor = colorResource(id = R.color.teal_700),
                focusedLabelColor = colorResource(id = R.color.red_1),
@@ -109,22 +107,25 @@ fun addPreperation(stateType:Int,viewModel: PrepsView = hiltViewModel(), onNavig
                textColor = colorResource(id = R.color.appColor),
                cursorColor = colorResource(id = R.color.appColor)
            )
-           OutlinedTextField(value = preparationName,
+           Text(text = "Preparation",
+               fontSize = 18.sp,
+               fontWeight = FontWeight.W500,
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .padding(start = 10.dp,top = 6.dp)
+           )
+           TextField(value = preparationName,
                onValueChange = {preparationName=it},
                textStyle = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Normal),
                modifier = Modifier
                    .fillMaxWidth()
-                   .padding(start = 10.dp, end = 10.dp, bottom = 5.dp),
-               label = {
-                   Text(text = "Preparation Name",
-                       fontSize = 18.sp,
-                       fontWeight = FontWeight.W500
-                   )
-               },
+                   .padding(start = 10.dp, end = 10.dp, bottom = 2.dp),
                singleLine = true,
                isError = prepNameValid,
-               shape = RoundedCornerShape(7.dp),
-               colors = feildsColor
+               colors = TextFieldDefaults.textFieldColors(
+                   cursorColor =  Color.White,
+                   focusedIndicatorColor = colorResource(id = R.color.appColor2)
+               )
            )
            Text(
                text = "${errors[0]}",
@@ -135,26 +136,27 @@ fun addPreperation(stateType:Int,viewModel: PrepsView = hiltViewModel(), onNavig
                    .fillMaxWidth()
                    .padding(start = 10.dp),
            )
-           Spacer(modifier = Modifier.height(5.dp))
-           OutlinedTextField(
+           Text(text = "Description",
+               fontSize = 18.sp,
+               fontWeight = FontWeight.W500,
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .padding(start = 10.dp,top=5.dp)
+           )
+           TextField(
                value = descriptions,
                onValueChange = { descriptions = it },
                textStyle = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Normal),
                modifier = Modifier
                    .fillMaxWidth()
-                   .padding(start = 10.dp, end = 10.dp, bottom = 5.dp),
-               label = {
-                   Text(text = "Describe this preparation",
-                       fontSize = 18.sp,
-                       fontWeight = FontWeight.W500
-                   )
-               },
+                   .padding(start = 10.dp, end = 10.dp, bottom = 2.dp),
                singleLine = true,
-               colors = feildsColor,
-               shape = RoundedCornerShape(7.dp),
+               colors = TextFieldDefaults.textFieldColors(
+                   cursorColor =  Color.White,
+                   focusedIndicatorColor = colorResource(id = R.color.appColor2)
+               ),
                isError = descriptionsValid,
                maxLines = 4
-
                )
            Text(
                text = "${errors[1]}",
@@ -163,9 +165,8 @@ fun addPreperation(stateType:Int,viewModel: PrepsView = hiltViewModel(), onNavig
                fontStyle = FontStyle.Italic,
                modifier = Modifier
                    .fillMaxWidth()
-                   .padding(start = 10.dp),
+                   .padding(start = 10.dp, bottom = 7.dp),
            )
-           Spacer(modifier = Modifier.height(5.dp) )
            Button(onClick = {
                val calender= Calendar.getInstance()
                val datePickerDialog = DatePickerDialog(

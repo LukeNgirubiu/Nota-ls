@@ -29,6 +29,7 @@ import com.varietapp.NotaLs.Utils.ItemsEvent
 import com.varietapp.NotaLs.Utils.ShoppingEvent
 import com.varietapp.NotaLs.Utils.UiEvents
 import com.varietapp.NotaLs.Views.ShoppingViewModel
+import com.varietapp.NotaLs.components.deletionShoppingDialog
 import com.varietapp.NotaLs.components.shoppingDialog
 import com.varietapp.NotaLs.components.shoppingItem
 
@@ -42,10 +43,7 @@ fun Shopping(context: Context,onNavigate: (UiEvents.Navigate)->Unit, viewModel:S
          when(it){
              is UiEvents.Navigate->onNavigate(it)
              is UiEvents.ShowSnackBar->{
-                 val snackbar=scaffoldState.snackbarHostState.showSnackbar(it.message,it.action)
-                 if (snackbar==SnackbarResult.ActionPerformed && it.status==1){
-                     viewModel.onEvent(ShoppingEvent.undoDelete)
-                 }
+                scaffoldState.snackbarHostState.showSnackbar(it.message,it.action)
              }
          }
      }
@@ -126,5 +124,8 @@ Scaffold(
 )
     if (viewModel.isDialogOn){
         shoppingDialog(context)
+    }
+    if (viewModel.isDeleteDialogOn){
+        deletionShoppingDialog(viewModel.shopping!!.title,viewModel::onEvent,viewModel::closeDelete)
     }
 }

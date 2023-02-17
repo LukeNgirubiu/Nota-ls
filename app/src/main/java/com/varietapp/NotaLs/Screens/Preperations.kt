@@ -22,12 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.varietapp.NotaLs.R
-
 import com.varietapp.NotaLs.Utils.PrepEvent
 import com.varietapp.NotaLs.Utils.UiEvents
 import com.varietapp.NotaLs.Views.PrepsView
 import com.varietapp.NotaLs.components.PrepareItem
-
+import com.varietapp.NotaLs.components.deletionActiveDialog
 
 @Composable
 fun preparations(context:Context, viewModel:PrepsView= hiltViewModel(), onNavigate: (UiEvents.Navigate)->Unit){
@@ -42,9 +41,9 @@ fun preparations(context:Context, viewModel:PrepsView= hiltViewModel(), onNaviga
                         message = event.message,
                         actionLabel = event.action
                     )
-                  if (result==SnackbarResult.ActionPerformed){
-                        viewModel.onEvent(PrepEvent.undoDelete)
-                    }
+//                  if (result==SnackbarResult.ActionPerformed){
+                     //   viewModel.onEvent(PrepEvent.undoDelete)
+                 //   }
                 }
                 else->Unit
             }
@@ -117,6 +116,9 @@ fun preparations(context:Context, viewModel:PrepsView= hiltViewModel(), onNaviga
          }
     }
     )
+    if (viewModel.isDialogOn){
+        deletionActiveDialog(viewModel.prep!!.name!!,viewModel::onEvent,viewModel::closeDialog)
+    }
 }
 //Routes.prepAdd.passId(0)
 //navHostController.navigate(route = Routes.prepAdd.passId(0))

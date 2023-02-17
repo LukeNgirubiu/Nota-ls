@@ -1,11 +1,15 @@
 package com.varietapp.NotaLs.Views
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.varietapp.NotaLs.PREP_ID
 import com.varietapp.NotaLs.Utils.PrepEvent
 import com.varietapp.NotaLs.Utils.UiEvents
 import com.varietapp.NotaLs.data.Event
+import com.varietapp.NotaLs.data.EventActivity
 import com.varietapp.NotaLs.repository.EventRepository
 import com.varietapp.NotaLs.repository.ServiceRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,9 +25,16 @@ class PrepsView @Inject constructor(
     val allpreps=repository.getEvents()
     val uiEvent=Channel<UiEvents>()
     val _uiEvent=uiEvent.receiveAsFlow()
-    var prep:Event?=null
+    var isDialogOn by mutableStateOf(false)
+        private set
+    var prep by mutableStateOf<Event?>(null)
+        private set
     suspend fun getPrep(id:Int):Event{
        return repository.getEventById(id)!!
+    }
+    fun closeDialog(){
+        isDialogOn=false
+        prep=null
     }
     fun onEvent(event: PrepEvent){
         when(event){
@@ -34,16 +45,17 @@ class PrepsView @Inject constructor(
                 sendUiEvent(UiEvents.Navigate("addpreps?id=${event.id}"))
             }
             is PrepEvent.onDeletePrep->{
-                prep=event.item
+              //  prep=event.item
                 viewModelScope.launch {
-                    repository.deleteEvent(event.item)
-                    sendUiEvent(UiEvents.ShowSnackBar(message="Deleted successful",action="Undo"))
+                    repository.deleteEvent(prep!!)
+                    sendUiEvent(UiEvents.ShowSnackBar(message="Deleted successful",action=""))
+                    isDialogOn=false
+                    prep=null
                 }
             }
-            is PrepEvent.undoDelete->{
-                viewModelScope.launch{
-                    repository.insertEvent(prep!!)
-                }
+            is PrepEvent.onDeleteDialog->{
+               isDialogOn=true
+               prep=event.prep
             }
             is PrepEvent.onInsertPrep->{
                 viewModelScope.launch {

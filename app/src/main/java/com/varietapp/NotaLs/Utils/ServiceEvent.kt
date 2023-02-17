@@ -1,7 +1,6 @@
 package com.varietapp.NotaLs.Utils
 
 import com.varietapp.NotaLs.data.Service
-
 sealed class ServiceEvent{
     data class onAddService(val id:Int):ServiceEvent()
     object onHome:ServiceEvent()
