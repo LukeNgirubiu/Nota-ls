@@ -6,11 +6,11 @@ import com.varietapp.NotaLs.data.Shopping
 
 sealed class ShoppingEvent{
 object onCloseDialog:ShoppingEvent()
-data class  onOpenDialog(val type:Int):ShoppingEvent()//Type 1 is create 2 is update
+object  onAdd:ShoppingEvent()//Type 1 is create 2 is update
 data class onSave(val shopping: Shopping):ShoppingEvent()
-data class onOpenDialogUpdate(val shopping: Shopping):ShoppingEvent()
+data class onUpdate(val shopp_id:Int):ShoppingEvent()
 object onDelete:ShoppingEvent()
 data class onDeleteDialog(val shopping: Shopping):ShoppingEvent()
-data class onToItems(val shopId:Int):ShoppingEvent()
+data class onToItems(val shopId:Int,val currency:String):ShoppingEvent()
 object onBackHome:ShoppingEvent()
 }

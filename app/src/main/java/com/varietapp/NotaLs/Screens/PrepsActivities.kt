@@ -112,6 +112,4 @@ fun Active(id:Int,date:String, viewModel: ActivitiesViewModel= hiltViewModel(), 
     if (viewModel.isDialogOn){
         activitiesDialog(prepId = id, dismis = viewModel::setDialogOff,context=context, activityId = viewModel.activityId)
     }
-
-
 }

@@ -140,6 +140,27 @@ fun Help(viewModel: HomeViewModel = hiltViewModel(), onNavigate:(UiEvents.Naviga
                       .fillMaxWidth()
                       .padding(bottom = 10.dp)
                   )
+
+                  Text(text ="Service", style = TextStyle(
+                      fontFamily = FontFamily(
+                          Font(R.font.source_sans_pro_bold)
+                      ),
+                      fontSize = 20.sp,
+                      color = colorResource(id = R.color.black)
+                  ), modifier = Modifier
+                      .fillMaxWidth()
+                      .padding(bottom = 2.dp)
+                  )
+                  Text(text = stringResource(id = R.string.services), style = TextStyle(
+                      fontFamily = FontFamily(
+                          Font(R.font.source_sans_pro_regular)
+                      ),
+                      fontSize = 20.sp,
+                      color = colorResource(id = R.color.black)
+                  ), modifier = Modifier
+                      .fillMaxWidth()
+                      .padding(bottom = 10.dp)
+                  )
                 }
             }
         }

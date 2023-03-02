@@ -118,19 +118,42 @@ NavHost(navController = controller, startDestination = Routes.home.route ){
         }, context = context)
     }
     composable(route = Routes.Items.route, arguments = listOf(
+        navArgument(Currency){
+            type= NavType.StringType
+            defaultValue=""
+        },
         navArgument(SHOPID){
             type= NavType.IntType
             defaultValue=0
         }
     )){
         val shoppingId=it.arguments?.getInt(SHOPID)
-        Items(shoppId = shoppingId!!, onNavigate = {
+        val currency=it.arguments?.getString(Currency)
+        Items(shoppId = shoppingId!!, currency = currency!!, onNavigate = {
             controller.navigate(it.route){
                 popUpTo(it.route){
                     inclusive=true
                 }
             }
         })
+    }
+
+    composable(route = Routes.AddShopping.route,
+        arguments = listOf(
+            navArgument(SHOPID){
+                type= NavType.IntType
+                defaultValue=-1
+            }
+        )
+    ){
+        val id=it.arguments?.getInt(SHOPID)
+        addShopping(id!!.toInt(),onNavigate = {
+            controller.navigate(it.route){
+                popUpTo(it.route){
+                    inclusive=true
+                }
+            }
+        }, context = context)
     }
 }
 }

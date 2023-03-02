@@ -113,7 +113,7 @@ Scaffold(
     },
     floatingActionButton = {
         FloatingActionButton(onClick = {
-            viewModel.onEvent(ShoppingEvent.onOpenDialog(1))
+            viewModel.onEvent(ShoppingEvent.onAdd)
         },
             backgroundColor = colorResource(id = R.color.appColor3),
             contentColor = Color.White
@@ -122,9 +122,6 @@ Scaffold(
         }
     }
 )
-    if (viewModel.isDialogOn){
-        shoppingDialog(context)
-    }
     if (viewModel.isDeleteDialogOn){
         deletionShoppingDialog(viewModel.shopping!!.title,viewModel::onEvent,viewModel::closeDelete)
     }

@@ -120,7 +120,7 @@ fun AddService(serviceId:Int, onNavigate:(UiEvents.Navigate)->Unit,viewModel: Se
                         color=Color.Black,
                         fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))
                 TextField(value =expense,
-                    onValueChange ={if(it.length<7) expense=it},
+                    onValueChange ={if(it.length<6) expense=it},
                     singleLine = true,
                     isError =errorsFields[1],
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

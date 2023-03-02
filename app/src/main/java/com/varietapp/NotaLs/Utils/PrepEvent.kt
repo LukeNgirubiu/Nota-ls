@@ -11,5 +11,5 @@ sealed class PrepEvent {
     data class onInsertPrep(val prep:Event):PrepEvent()
     object backToPreps:PrepEvent()
     object backToHome:PrepEvent()
-    //(val item:Event)
+
 }

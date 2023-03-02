@@ -39,7 +39,7 @@ class PrepsView @Inject constructor(
     fun onEvent(event: PrepEvent){
         when(event){
             is PrepEvent.onAddPrep->{
-                sendUiEvent(UiEvents.Navigate("addpreps?id=0"))
+                sendUiEvent(UiEvents.Navigate("addpreps?id=-1"))
             }
             is PrepEvent.onEditPrep->{
                 sendUiEvent(UiEvents.Navigate("addpreps?id=${event.id}"))

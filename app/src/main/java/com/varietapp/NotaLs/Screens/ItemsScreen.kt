@@ -38,7 +38,8 @@ import com.varietapp.NotaLs.components.ItemDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
-fun Items(shoppId:Int, viewModel: ItemsViewModel= hiltViewModel(),onNavigate:(UiEvents.Navigate)->Unit){
+fun Items(shoppId:Int,currency:String, viewModel: ItemsViewModel= hiltViewModel(),onNavigate:(UiEvents.Navigate)->Unit){
+    println("Currency ${currency}")
     val allItems=viewModel.getAllItems(shoppId).collectAsState(initial = emptyList())
     val scaffoldState= rememberScaffoldState()
     var sumCost by remember {
@@ -181,7 +182,7 @@ Scaffold(
                                   .fillMaxWidth()
                                   .padding(start = 20.dp)
                           )
-                          Text(text = "Ksh $sumCost",
+                          Text(text = "$currency $sumCost",
                               color= Color.White,
                               fontFamily = FontFamily(Font(R.font.source_sans_pro_regular)),
                               fontSize = 22.sp,
@@ -203,7 +204,7 @@ Scaffold(
                                   .fillMaxWidth()
                                   .padding(start = 20.dp)
                           )
-                          Text(text = "Ksh $checkedOn",
+                          Text(text = "$currency $checkedOn",
                               color= Color.White,
                               fontFamily = FontFamily(Font(R.font.source_sans_pro_regular)),
                               fontSize = 22.sp,
@@ -245,7 +246,7 @@ Scaffold(
                       .fillMaxSize()
                       .padding(it.calculateBottomPadding())){
                       itemsIndexed(allItems.value){ index, item ->
-                          ItemCard(item = item,viewModel::onEvent)
+                          ItemCard(item = item,currency=currency,viewModel::onEvent)
                           if (index<allItems.value.size-1){
                               Divider(color = Color.Black, thickness = 0.5.dp,
                                   modifier = Modifier.padding(bottom = 5.dp,top=10.dp))

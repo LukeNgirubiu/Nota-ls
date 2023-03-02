@@ -10,4 +10,5 @@ data class Shopping(
     val title:String,
     val description:String,
     val dateDue:String,
+    val currency:String,
 )

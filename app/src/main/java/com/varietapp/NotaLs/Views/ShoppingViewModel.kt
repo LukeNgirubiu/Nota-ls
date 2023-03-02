@@ -21,11 +21,7 @@ import javax.inject.Inject
 class ShoppingViewModel @Inject constructor(
     private val repository: ShoppingRepository
 ) :ViewModel() {
-    var isDialogOn by mutableStateOf(false)
-        private set
     var isDeleteDialogOn by mutableStateOf(false)
-        private set
-    var dialogueType by mutableStateOf(1)
         private set
     var shopping by mutableStateOf<Shopping?>(null)
         private set
@@ -34,35 +30,29 @@ class ShoppingViewModel @Inject constructor(
     fun getAllShoppings(): Flow<List<Shopping>> {
         return repository.getAllShopping()
     }
+    suspend fun  getShopping(id:Int):Shopping?{
+        return repository.getShoppingById(id)
+    }
     fun closeDelete(){
         isDeleteDialogOn=false
         shopping=null
     }
     fun onEvent(event:ShoppingEvent){
         when(event){
-            is ShoppingEvent.onOpenDialog->{
-                isDialogOn=true
-               dialogueType=event.type
-            }
-            is ShoppingEvent.onCloseDialog->{
-                isDialogOn=false
-                dialogueType=1
+            is ShoppingEvent.onAdd->{
+                sendEvent(UiEvents.Navigate("add_shopping/-1"))
             }
             is ShoppingEvent.onSave->{
                 viewModelScope.launch {
-                    val shop=if (dialogueType==2) event.shopping.copy(id=shopping!!.id) else event.shopping
-                    repository.insertShopping(shop)
-                    if (dialogueType==2){
+                    repository.insertShopping(event.shopping)
+                    if (event.shopping.id!=null){
                         sendEvent(UiEvents.ShowSnackBar("Shopping updated",""))
                     }
-                    isDialogOn=false
-                    dialogueType=1
+                    sendEvent(UiEvents.Navigate("shopping"))
                 }
             }
-            is ShoppingEvent.onOpenDialogUpdate->{
-                isDialogOn=true
-                dialogueType=2
-                shopping=event.shopping
+            is ShoppingEvent.onUpdate->{
+                sendEvent(UiEvents.Navigate("add_shopping/${event.shopp_id}"))
             }
             is ShoppingEvent.onDeleteDialog->{
                 shopping=event.shopping
@@ -72,15 +62,15 @@ class ShoppingViewModel @Inject constructor(
                 viewModelScope.launch {
                     repository.deleteShopping(shopping!!)
                     closeDelete()
-                  //  sendEvent(UiEvents.ShowSnackBar("Shopping deleted","",1))
                 }
             }
             is ShoppingEvent.onToItems->{
-                sendEvent(UiEvents.Navigate("items/${event.shopId}"))
+                sendEvent(UiEvents.Navigate("items/${event.shopId}/${event.currency}"))
             }
             is ShoppingEvent.onBackHome->{
                 sendEvent(UiEvents.Navigate("home"))
             }
+            else -> {}
         }
 
     }

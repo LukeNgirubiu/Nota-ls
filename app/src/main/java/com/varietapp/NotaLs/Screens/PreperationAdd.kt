@@ -57,7 +57,7 @@ fun addPreperation(stateType:Int,viewModel: PrepsView = hiltViewModel(), onNavig
     }
     val scaffoldState= rememberScaffoldState()
     LaunchedEffect(key1 = true){
-        if (stateType>0){
+        if (stateType>-1){
             val prep=viewModel.getPrep(stateType)
             preparationName=prep.name!!
             descriptions=prep.description

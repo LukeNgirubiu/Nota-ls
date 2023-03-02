@@ -84,12 +84,13 @@ fun validateActivity(time:String,name: String):PrepValid{
 }
 
 
-fun validateShopping(title:String,description: String,dateDue:String):PrepValid{
+fun validateShopping(title:String,description: String,dateDue:String,currency:String):PrepValid{
     val valids=HashMap<String,Boolean>()
     valids.put("time",true)
     valids.put("name",true)
     valids.put("description",true)
-    val errors= arrayOf("","","")
+    valids.put("currency",true)
+    val errors= arrayOf("","","","")
     var valid=true
     if (title.isBlank()){
         errors[0]="* Title name is required"
@@ -118,6 +119,11 @@ fun validateShopping(title:String,description: String,dateDue:String):PrepValid{
             valid=false
             valids.put("time",false)
         }
+    }
+    if (currency.isBlank()){
+        errors[3]="* Currency is required"
+        valid=false
+        valids.put("currency",false)
     }
     return  PrepValid(valid,errors,valids)
 }

@@ -2,6 +2,7 @@ package com.varietapp.NotaLs
 val PREP_ID="PREP_ID"
 val Date="date"
 val SHOPID="shopId"
+val Currency="Currency"
 val SVID="svId"
 sealed class Routes(val route:String) {
     object home:Routes(route = "home")
@@ -12,5 +13,6 @@ sealed class Routes(val route:String) {
     object help:Routes(route = "help")
     object serviceAdd:Routes(route="service?id={$SVID}")
     object prepActivities:Routes(route="activities/{$PREP_ID}/{$Date}")
-    object Items:Routes(route="items/{$SHOPID}")
+    object Items:Routes(route="items/{$SHOPID}/{$Currency}")
+    object AddShopping:Routes(route="add_shopping/{$SHOPID}")
 }

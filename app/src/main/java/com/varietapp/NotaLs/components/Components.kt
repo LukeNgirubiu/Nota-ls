@@ -470,12 +470,12 @@ fun shoppingDialog(context:Context,viewModel: ShoppingViewModel= hiltViewModel()
         }
 
         LaunchedEffect(key1 = true){
-           btnTxt=if(viewModel.dialogueType==2) "Update" else "Add"
-            if (viewModel.dialogueType==2){
-                title=viewModel.shopping!!.title
-                description=viewModel.shopping!!.description
-                dateDue=viewModel.shopping!!.dateDue
-            }
+//           btnTxt=if(viewModel.dialogueType==2) "Update" else "Add"
+//            if (viewModel.dialogueType==2){
+//                title=viewModel.shopping!!.title
+//                description=viewModel.shopping!!.description
+//                dateDue=viewModel.shopping!!.dateDue
+//            }
 
         }
         Card(modifier = Modifier
@@ -606,7 +606,7 @@ fun shoppingDialog(context:Context,viewModel: ShoppingViewModel= hiltViewModel()
                             fontFamily = FontFamily(Font(R.font.ropa_sans_italic))))
                 }
                 Button(onClick = {
-                   val valid=validateShopping(title,description,dateDue)
+                   val valid=validateShopping(title,description,dateDue,"")
                     errors=valid.errors
                     if (valid.valid){
                         errors=arrayOf("","","")
@@ -616,6 +616,7 @@ fun shoppingDialog(context:Context,viewModel: ShoppingViewModel= hiltViewModel()
                         viewModel.onEvent(ShoppingEvent.onSave(Shopping(title = title,
                         description = description,
                         dateDue = dateDue,
+                        currency = ""
                      )))
 
                     }
@@ -682,7 +683,7 @@ fun shoppingItem(shopping: Shopping,event:(ShoppingEvent)->Unit){
             horizontalArrangement = Arrangement.End
         ){
             IconButton(onClick = {
-                event(ShoppingEvent.onToItems(shopping.id!!))
+                event(ShoppingEvent.onToItems(shopping.id!!,shopping.currency!!))
             },
                 modifier = Modifier.padding(end=10.dp)
             ) {
@@ -729,7 +730,7 @@ fun shoppingItem(shopping: Shopping,event:(ShoppingEvent)->Unit){
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Button(onClick = {
-                event(ShoppingEvent.onOpenDialogUpdate(shopping))
+                event(ShoppingEvent.onUpdate(shopping.id!!))
             }, elevation = ButtonDefaults.elevation(2.dp,2.dp),
                 modifier = Modifier
                     .padding(end = 10.dp)
@@ -895,7 +896,7 @@ fun ItemDialog(viewModel:ItemsViewModel){
                                 color=colorResource(id = R.color.appColor3),
                                 fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))
                         TextField(value =totalAmount,
-                            onValueChange ={ if (it.length <= 10) totalAmount = it },
+                            onValueChange ={ if (it.length <= 5) totalAmount = it },
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             isError=totalAmountValid,
@@ -919,7 +920,7 @@ fun ItemDialog(viewModel:ItemsViewModel){
                                 color=colorResource(id = R.color.appColor3),
                                 fontFamily = FontFamily(Font(R.font.source_sans_pro_bold))))
                         TextField(value =quantity,
-                            onValueChange ={ if (it.length <= 5) quantity = it },
+                            onValueChange ={ if (it.length <= 4) quantity = it },
                             singleLine = true,
                             isError=quantityValid,
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -988,7 +989,7 @@ fun ItemDialog(viewModel:ItemsViewModel){
     }
 }
 @Composable
-fun ItemCard(item:Items,event:(ItemsEvent)->Unit){
+fun ItemCard(item:Items,currency:String,event:(ItemsEvent)->Unit){
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -1045,7 +1046,7 @@ fun ItemCard(item:Items,event:(ItemsEvent)->Unit){
             ) {
                 Icon(painter = painterResource(id = R.drawable.delete_items) , contentDescription = "delete items")
             }
-        Text(text ="Ksh "+item.cost.toString(), style = TextStyle(
+        Text(text ="$currency "+item.cost.toString(), style = TextStyle(
                 fontFamily = FontFamily(
                     Font(R.font.source_sans_pro_regular)
                 ),
