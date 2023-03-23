@@ -1,6 +1,6 @@
 ### Nota-ls
 This is a personal application that facilitates on the following:
-* Taking a list of shoppings. 
+* Taking a list of shoppings and checking in on each when bought. 
 * Noting down services paid for.
 * Listing down activities with respect to events and checking in on each when done.
 
