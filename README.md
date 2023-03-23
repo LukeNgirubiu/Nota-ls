@@ -6,4 +6,4 @@ This is a personal application that facilitates on the following:
 
 Technically this application has been developed using Jetpack compose, ROOM and MVVM with Daggar hilt as the dependancy injector.
 
-It's available [On play stoy](https://play.google.com/store/apps/details?id=com.varietapp.NotaLs. You can check on it)
+It's available [On play store](https://play.google.com/store/apps/details?id=com.varietapp.NotaLs). You can check on it
